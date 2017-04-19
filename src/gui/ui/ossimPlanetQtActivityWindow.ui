@@ -87,7 +87,7 @@
   <customwidget>
    <class>ossimPlanetQtActivityWidget</class>
    <extends>QTreeWidget</extends>
-   <header>ossimPlanetQtActivityWidget.h</header>
+   <header>ossimPlanetQt/ossimPlanetQtActivityWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
