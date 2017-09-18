@@ -61,6 +61,7 @@
 #include <osgGA/AnimationPathManipulator>
 #include <osgGA/TerrainManipulator>
 #include <osg/io_utils>
+#include <mutex>
 static const int PREFERENCES_CLIENT_WIDGET_NAME_IDX   = 0;
 static const int PREFERENCES_CLIENT_WIDGET_IP_IDX   = 1;
 static const int PREFERENCES_CLIENT_WIDGET_PORT_IDX = 2;
@@ -100,7 +101,7 @@ public:
 protected:
    virtual int overflow(int c)
 	{
-		OpenThreads::ScopedLock<OpenThreads::Mutex> lock(theMutex);
+		std::lock_guard<std::recursive_mutex> lock(theMutex);
 		if(!traits::eq_int_type(c, traits::eof()))
 		{
 			theBuffer += ossimString(c);
@@ -111,14 +112,14 @@ protected:
 	
    virtual std::streamsize xsputn(const charT * pChar, std::streamsize n)
 	{
-		OpenThreads::ScopedLock<OpenThreads::Mutex> lock(theMutex);
+		std::lock_guard<std::recursive_mutex> lock(theMutex);
 		theBuffer += ossimString(pChar, pChar + n);
 		return n;
 	}
 	
    virtual int sync()
 	{
-		OpenThreads::ScopedLock<OpenThreads::Mutex> lock(theMutex);
+		std::lock_guard<std::recursive_mutex> lock(theMutex);
 		if(theMainWindow)
 		{
 			if(theBuffer.size())
@@ -132,7 +133,7 @@ protected:
 		return 0;
 	}
 private:
-	mutable OpenThreads::ReentrantMutex theMutex;
+	mutable std::recursive_mutex theMutex;
 	ossimPlanetQtMainWindow* theMainWindow;
 	ossimPlanetQt::MessageEvent::MessageType theMessageType;
    ossimString theBuffer;

@@ -11,8 +11,8 @@
 #include <ossim/base/ossimGeoid.h>
 #include <ossim/base/ossimGeoidManager.h>
 #include <ossim/base/ossimRefPtr.h>
-#include <OpenThreads/Mutex>
 #include <ossimPlanetQt/ossimPlanetQtExport.h>
+#include <mutex>
 
 class OSSIMPLANETQT_DLL ossimPlanetQtAlertIconCallout : public osg::Drawable
 {
@@ -88,7 +88,7 @@ public:
    ossimPlanetId addAlert(const ossimGpt& gpt);
    virtual void traverse(osg::NodeVisitor& nv);
 protected:
-   OpenThreads::Mutex                theMutex;
+   std::mutex                theMutex;
    std::map<ossimPlanetId, ossimGpt> theAlertsToAddOrUpdate;
    //ossimPlanetLand*                  theLand;
    ossimPlanetQtAlertIconCallout*    theDrawable;

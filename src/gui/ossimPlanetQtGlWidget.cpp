@@ -9,7 +9,6 @@
 #include <QFrame>
 #include <ossimPlanet/ul.h>
 #include <ossimPlanet/ossimPlanetTerrain.h>
-#include <OpenThreads/ScopedLock>
 #include <osgUtil/LineSegmentIntersector>
 #include <osg/io_utils>
 #include <osgGA/GUIEventAdapter>
@@ -361,7 +360,7 @@ QTimer *ossimPlanetQtViewer::timer()
 #if 0
 void ossimPlanetQtViewer::requestRedraw()
 {
-   OpenThreads::ScopedLock<OpenThreads::Mutex> lock(theDrawMutex);
+   std::lock_guard<std::mutex> lock(theDrawMutex);
    theRequestRedrawFlag = true;
    if(!timer()->isActive())
    {
@@ -373,7 +372,7 @@ void ossimPlanetQtViewer::requestRedraw()
 #if 0
 void ossimPlanetQtViewer::requestContinuousUpdate(bool needed)
 {
-   OpenThreads::ScopedLock<OpenThreads::Mutex> lock(theDrawMutex);
+   std::lock_guard<std::mutex> lock(theDrawMutex);
    theRequestContinuousUpdateFlag = needed;
    if(needed)
    {
@@ -398,7 +397,7 @@ void ossimPlanetQtViewer::setCurrentSimulationTime(double simtime)
 
 void ossimPlanetQtViewer::frameIfNeeded()
 {
-   //OpenThreads::ScopedLock<OpenThreads::Mutex> lock(theDrawMutex);
+   //std::lock_guard<std::mutex> lock(theDrawMutex);
    bool doVBlankLimit = false;
    osg::Timer_t beginT = osg::Timer::instance()->tick();
    osg::Timer_t endT;

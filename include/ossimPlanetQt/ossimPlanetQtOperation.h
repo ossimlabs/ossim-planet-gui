@@ -9,7 +9,6 @@
 #include <ossim/base/ossimReferenced.h>
 #include <ossimPlanet/ossimPlanetKml.h>
 #include <ossimPlanetQt/ossimPlanetQtExport.h>
-#include <OpenThreads/Mutex>
 #include <QtCore/Qt>
 #include <QtCore/QUrl>
 #include <QtCore/QStringList>
@@ -50,7 +49,7 @@ protected:
 	void buildOverviews(ossimImageHandler* handler);
 	void buildHistograms(ossimImageHandler* handler);
 	osg::ref_ptr<ossimPlanetOssimImageLayer> theLayer;
-	OpenThreads::Mutex theStagerMutex;
+	std::mutex theStagerMutex;
 	ossimPlanetQtLegend* theLegend;
 	ossimFilename        theFilename;   
    ossimString          theStagerMessage;

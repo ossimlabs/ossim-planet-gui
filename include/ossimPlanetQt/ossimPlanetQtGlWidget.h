@@ -29,7 +29,7 @@
 #include <osgViewer/Viewer>
 #include <osgViewer/CompositeViewer>
 #include <osgViewer/ViewerEventHandlers>
-#include <OpenThreads/ReentrantMutex>
+#include <mutex>
 class ossimOsgMainFormController;
 
 class ossimPlanetQtEmbedded;
@@ -102,7 +102,7 @@ protected:
    void clearPointersInViewer();
    QTimer *timer();    // Ensures that qtimer_ exists
    void noRenderCycle();
-   OpenThreads::ReentrantMutex theDrawMutex;
+   std::mutex theDrawMutex;
 //   bool theRequestRedrawFlag;
 //   bool theRequestContinuousUpdateFlag;
    int theTimerInterval;

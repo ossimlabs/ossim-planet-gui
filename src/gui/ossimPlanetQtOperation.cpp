@@ -117,7 +117,7 @@ void ossimPlanetQtOssimImageStagerOperation::run()
 
 void ossimPlanetQtOssimImageStagerOperation::processProgressEvent(ossimProcessProgressEvent& event)
 {
-	OpenThreads::ScopedLock<OpenThreads::Mutex> lock(theStagerMutex);
+	std::lock_guard<std::mutex> lock(theStagerMutex);
 	if(state() == ossimPlanetOperation::CANCELED_STATE)
 	{
 		if(theCurrentProcessInterface)

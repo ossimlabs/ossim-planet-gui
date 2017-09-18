@@ -1,5 +1,4 @@
 #include <ossimPlanetQt/ossimPlanetQtAlertLayer.h>
-#include <OpenThreads/ScopedLock>
 #include <ossimPlanet/ossimPlanet.h>
 //#include <ossimPlanet/ossimPlanetLand.h>
 #include <ossimPlanet/ossimPlanetGeoRefModel.h>
@@ -106,7 +105,7 @@ void ossimPlanetQtAlertLayer::updateAlert(const ossimPlanetId& /*id*/,
 
 ossimPlanetId ossimPlanetQtAlertLayer::addAlert(const ossimGpt& gpt)
 {
-   OpenThreads::ScopedLock<OpenThreads::Mutex> lock(theMutex);
+   std::lock_guard<std::mutex> lock(theMutex);
    ossimPlanetId id = ossimPlanetIdManager::nextId();
    theAlertsToAddOrUpdate.insert(std::make_pair(id, gpt));
    return id;

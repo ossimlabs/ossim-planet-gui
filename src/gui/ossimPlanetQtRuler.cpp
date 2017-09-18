@@ -104,7 +104,7 @@ protected:
    osg::ref_ptr<osg::CameraNode> theCameraNode;
    osg::Geode* theGeode;
    ossimPlanetMeasureToolDrawable* theDrawable;
-   mutable OpenThreads::Mutex theMutex;
+   mutable std::mutex theMutex;
 };
 
 ossimPlanetMeasureTool::ossimPlanetMeasureTool()
@@ -136,14 +136,14 @@ void ossimPlanetMeasureTool::setPoints(const osg::Vec3d& startPt,
 
 {
 	setRedrawFlag(true);
-   OpenThreads::ScopedLock<OpenThreads::Mutex> lock(theMutex);
+   std::lock_guard<std::mutex> lock(theMutex);
    theStartPoint = startPt;
    theEndPoint   = endPt;
 }
 
 void ossimPlanetMeasureTool::traverse(osg::NodeVisitor& nv)
 {
-   OpenThreads::ScopedLock<OpenThreads::Mutex> lock(theMutex);
+   std::lock_guard<std::mutex> lock(theMutex);
    switch(nv.getVisitorType())
    {
       case osg::NodeVisitor::UPDATE_VISITOR:

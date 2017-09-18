@@ -170,8 +170,8 @@ void ossimPlanetQtLegend::populate()
 {
    clear();
 	{
-		OpenThreads::ScopedLock<OpenThreads::Mutex> lockTemp(theNodeIndexMapMutex);
-		OpenThreads::ScopedLock<OpenThreads::Mutex> lockTemp2(theTextureLayerIndexMapMutex);
+		std::lock_guard<std::recursive_mutex> lockTemp(theNodeIndexMapMutex);
+		std::lock_guard<std::recursive_mutex> lockTemp2(theTextureLayerIndexMapMutex);
 		theNodeIndexMap.clear();
 		theTextureLayerIndexMap.clear();
 	}
@@ -202,10 +202,10 @@ void ossimPlanetQtLegend::populate()
 void ossimPlanetQtLegend::populateLegend(ossimRefPtr<ossimXmlNode> legendNode)
 {
    mainWindow()->iothread()->setPauseFlag(true);
-   OpenThreads::ScopedLock<OpenThreads::Mutex> lock(thePopulateLegendMutex);
+   std::lock_guard<std::recursive_mutex> lock(thePopulateLegendMutex);
    {  
-      OpenThreads::ScopedLock<OpenThreads::Mutex> lockTemp(theNodeIndexMapMutex);
-		OpenThreads::ScopedLock<OpenThreads::Mutex> lockTemp2(theTextureLayerIndexMapMutex);
+      std::lock_guard<std::recursive_mutex> lockTemp(theNodeIndexMapMutex);
+		std::lock_guard<std::recursive_mutex> lockTemp2(theTextureLayerIndexMapMutex);
       theNodeIndexMap.clear();
 		theTextureLayerIndexMap.clear();
   }
@@ -279,7 +279,7 @@ void ossimPlanetQtLegend::populateLegend(ossimRefPtr<ossimXmlNode> legendNode)
    resizeColumnToContents(1);
    blockSignals(false);
    {
-      OpenThreads::ScopedLock<OpenThreads::Mutex> lockTemp(theNodeIndexMapMutex);
+      std::lock_guard<std::recursive_mutex> lockTemp(theNodeIndexMapMutex);
       QTreeWidgetItemIterator locationIter(theLocationItem);
       while(*locationIter)
       {
@@ -314,7 +314,7 @@ void ossimPlanetQtLegend::addTextureLayerToTop(osg::ref_ptr<ossimPlanetTextureLa
 {
    ossimPlanetQtLegendTextureItem* root = referenceTextureItem();
 	{
-		OpenThreads::ScopedLock<OpenThreads::Mutex> lock2(theTextureLayerIndexMapMutex);
+		std::lock_guard<std::recursive_mutex> lock2(theTextureLayerIndexMapMutex);
 		if(theTextureLayerIndexMap.find(layer.get()) != theTextureLayerIndexMap.end())
 		{
 			return;
@@ -329,7 +329,7 @@ void ossimPlanetQtLegend::addTextureLayerToTop(osg::ref_ptr<ossimPlanetTextureLa
 #if 0
 ossimPlanetQtLegendTextureItem* ossimPlanetQtLegend::addTextureLayerToTop(osg::ref_ptr<ossimPlanetTextureLayer> layer)
 {
-   OpenThreads::ScopedLock<OpenThreads::Mutex> lock(thePopulateLegendMutex);
+   std::lock_guard<std::recursive_mutex> lock(thePopulateLegendMutex);
    ossimPlanetQtLegendTextureItem* root = referenceTextureItem();
 
    if(root)
@@ -363,8 +363,8 @@ ossimPlanetQtLegendTextureItem* ossimPlanetQtLegend::addTextureLayerAfterItem(os
    ossimPlanetTextureLayerGroup* group = item->layer()->getParent(0);
    if(group&&item->parent())
    {
-      OpenThreads::ScopedLock<OpenThreads::Mutex> lock(thePopulateLegendMutex);
-		OpenThreads::ScopedLock<OpenThreads::Mutex> lock2(theTextureLayerIndexMapMutex);
+      std::lock_guard<std::recursive_mutex> lock(thePopulateLegendMutex);
+		std::lock_guard<std::recursive_mutex> lock2(theTextureLayerIndexMapMutex);
 		if(theTextureLayerIndexMap.find(layer.get()) != theTextureLayerIndexMap.end())
 		{
 			return 0;
@@ -389,8 +389,8 @@ ossimPlanetQtLegendTextureItem* ossimPlanetQtLegend::addTextureLayerAfterItem(os
 ossimPlanetQtLegendTextureItem* ossimPlanetQtLegend::addTextureLayerToTop(osg::ref_ptr<ossimPlanetTextureLayer> layer,
 																								  ossimPlanetQtLegendTextureItem* item)
 {
-   OpenThreads::ScopedLock<OpenThreads::Mutex> lock(thePopulateLegendMutex);
-	OpenThreads::ScopedLock<OpenThreads::Mutex> lock2(theTextureLayerIndexMapMutex);
+   std::lock_guard<std::recursive_mutex> lock(thePopulateLegendMutex);
+	std::lock_guard<std::recursive_mutex> lock2(theTextureLayerIndexMapMutex);
 	if(theTextureLayerIndexMap.find(layer.get()) != theTextureLayerIndexMap.end())
 	{
 		return 0;
@@ -417,8 +417,8 @@ ossimPlanetQtLegendTextureItem* ossimPlanetQtLegend::addTextureLayerToTop(osg::r
 ossimPlanetQtLegendTextureItem* ossimPlanetQtLegend::addTextureLayerToBottom(osg::ref_ptr<ossimPlanetTextureLayer> layer,
                                                                              ossimPlanetQtLegendTextureItem* item)
 {
-   OpenThreads::ScopedLock<OpenThreads::Mutex> lock(thePopulateLegendMutex);
-	OpenThreads::ScopedLock<OpenThreads::Mutex> lock2(theTextureLayerIndexMapMutex);
+   std::lock_guard<std::recursive_mutex> lock(thePopulateLegendMutex);
+	std::lock_guard<std::recursive_mutex> lock2(theTextureLayerIndexMapMutex);
 	if(theTextureLayerIndexMap.find(layer.get()) != theTextureLayerIndexMap.end())
 	{
 		return 0;
@@ -450,8 +450,8 @@ ossimPlanetQtLegendTextureItem* ossimPlanetQtLegend::addTextureLayerBeforeItem(o
    ossimPlanetTextureLayerGroup* group = item->layer()->getParent(0);
    if(group&&item->parent())
    {
-      OpenThreads::ScopedLock<OpenThreads::Mutex> lock(thePopulateLegendMutex);
-		OpenThreads::ScopedLock<OpenThreads::Mutex> lock2(theTextureLayerIndexMapMutex);
+      std::lock_guard<std::recursive_mutex> lock(thePopulateLegendMutex);
+		std::lock_guard<std::recursive_mutex> lock2(theTextureLayerIndexMapMutex);
 		if(theTextureLayerIndexMap.find(layer.get()) != theTextureLayerIndexMap.end())
 		{
 			return 0;
@@ -477,10 +477,10 @@ ossimPlanetQtLegendTextureItem* ossimPlanetQtLegend::addTextureLayerBeforeItem(o
 
 void ossimPlanetQtLegend::addKmlNode(osg::ref_ptr<ossimPlanetKmlLayerNode> kml)
 {
-   OpenThreads::ScopedLock<OpenThreads::Mutex> lock(thePopulateLegendMutex);
+   std::lock_guard<std::recursive_mutex> lock(thePopulateLegendMutex);
    if(theLocationItem)
    {
-		OpenThreads::ScopedLock<OpenThreads::Mutex> lock2(theNodeIndexMapMutex);
+		std::lock_guard<std::recursive_mutex> lock2(theNodeIndexMapMutex);
       ossimPlanetQtLegendKmlItem* item = new ossimPlanetQtLegendKmlItem(theLocationItem);
 		theNodeIndexMap.insert(std::make_pair(kml.get(), item));
       item->setLayer(kml.get());
@@ -490,7 +490,7 @@ void ossimPlanetQtLegend::addKmlNode(osg::ref_ptr<ossimPlanetKmlLayerNode> kml)
 
 void ossimPlanetQtLegend::removeKmlNodeFromLegend(osg::ref_ptr<ossimPlanetKmlLayerNode> node)
 {
-   OpenThreads::ScopedLock<OpenThreads::Mutex> lock(thePopulateLegendMutex);
+   std::lock_guard<std::recursive_mutex> lock(thePopulateLegendMutex);
    QTreeWidgetItemIterator iter(theLocationItem);
    while(*iter)
    {
@@ -519,10 +519,10 @@ void ossimPlanetQtLegend::removeKmlNodeFromLegend(osg::ref_ptr<ossimPlanetKmlLay
 
 void ossimPlanetQtLegend::addVideoNode(osg::ref_ptr<ossimPlanetVideoLayerNode> node)
 {
-   OpenThreads::ScopedLock<OpenThreads::Mutex> lock(thePopulateLegendMutex);
+   std::lock_guard<std::recursive_mutex> lock(thePopulateLegendMutex);
    if(theVideoItem)
    {
-		OpenThreads::ScopedLock<OpenThreads::Mutex> lock(theNodeIndexMapMutex);
+		std::lock_guard<std::recursive_mutex> lock(theNodeIndexMapMutex);
       ossimPlanetQtLegendVideoItem* item = new ossimPlanetQtLegendVideoItem(theVideoItem);
 		theNodeIndexMap[node.get()] = item;
       item->setLayer(node.get());
@@ -531,7 +531,7 @@ void ossimPlanetQtLegend::addVideoNode(osg::ref_ptr<ossimPlanetVideoLayerNode> n
 
 void ossimPlanetQtLegend::removeVideoNodeFromLegend(osg::ref_ptr<ossimPlanetVideoLayerNode> node)
 {
-   OpenThreads::ScopedLock<OpenThreads::Mutex> lock(thePopulateLegendMutex);
+   std::lock_guard<std::recursive_mutex> lock(thePopulateLegendMutex);
    QTreeWidgetItemIterator iter(theVideoItem);
    while(*iter)
    {
@@ -573,8 +573,8 @@ void ossimPlanetQtLegend::addNode(osg::ref_ptr<ossimPlanetNode> node)
 		addVideoNode(videoNode);
 		return;
 	}
-   OpenThreads::ScopedLock<OpenThreads::Mutex> lock1(thePopulateLegendMutex);
-	OpenThreads::ScopedLock<OpenThreads::Mutex> lock2(theNodeIndexMapMutex);
+   std::lock_guard<std::recursive_mutex> lock1(thePopulateLegendMutex);
+	std::lock_guard<std::recursive_mutex> lock2(theNodeIndexMapMutex);
    
 	ossimPlanetQtLegendNodeItem* item = new ossimPlanetQtLegendNodeItem(getParentNodeItem(node.get(), theLocationItem));
 	theNodeIndexMap[node.get()] = item;
@@ -595,8 +595,8 @@ void ossimPlanetQtLegend::addBookmark(osg::ref_ptr<ossimPlanetLookAt> lookAt, co
 
 void ossimPlanetQtLegend::removeNodeFromLegend(osg::ref_ptr<ossimPlanetNode> node, bool removeNodeFromLayerFlag)
 {
-   OpenThreads::ScopedLock<OpenThreads::Mutex> lock1(thePopulateLegendMutex);
-	OpenThreads::ScopedLock<OpenThreads::Mutex> lock2(theNodeIndexMapMutex);
+   std::lock_guard<std::recursive_mutex> lock1(thePopulateLegendMutex);
+	std::lock_guard<std::recursive_mutex> lock2(theNodeIndexMapMutex);
    std::stack<ossimPlanetQtLegendNodeItem*> itemStack;
    if(node.valid())
    {
@@ -1450,7 +1450,7 @@ bool ossimPlanetQtLegend::event(QEvent* e)
                {
 						bool indexedFlag = false;
 						{
-						  OpenThreads::ScopedLock<OpenThreads::Mutex> lock(theTextureLayerIndexMapMutex);
+						  std::lock_guard<std::recursive_mutex> lock(theTextureLayerIndexMapMutex);
 						
 							indexedFlag = theTextureLayerIndexMap.find(imageLayerEvent->layer().get()) != theTextureLayerIndexMap.end();
 						}
@@ -1477,7 +1477,7 @@ bool ossimPlanetQtLegend::event(QEvent* e)
 					}
 					case ossimPlanetQt::ImageLayerEvent::REMOVED:
                {
-						//OpenThreads::ScopedLock<OpenThreads::Mutex> lock(theTextureLayerIndexMapMutex);
+						//std::lock_guard<std::recursive_mutex> lock(theTextureLayerIndexMapMutex);
 						//std::cout << "DOING REMOVED EVENT" << std::endl;
 						removeIndexMapping(imageLayerEvent->layer().get(), true);
 						break;
@@ -1491,7 +1491,7 @@ bool ossimPlanetQtLegend::event(QEvent* e)
 			ossimPlanetQt::NodePropertyEvent* nodePropertyEvent = dynamic_cast<ossimPlanetQt::NodePropertyEvent*>(e);
 			if(nodePropertyEvent&&nodePropertyEvent->node())
 			{
-				OpenThreads::ScopedLock<OpenThreads::Mutex> lock(theNodeIndexMapMutex);
+				std::lock_guard<std::recursive_mutex> lock(theNodeIndexMapMutex);
 				NodeIndexMapType::iterator iter = theNodeIndexMap.find(nodePropertyEvent->node());
 				if(iter!=theNodeIndexMap.end())
 				{
@@ -1522,7 +1522,7 @@ bool ossimPlanetQtLegend::event(QEvent* e)
 void ossimPlanetQtLegend::removeIndexMapping(osg::ref_ptr<ossimPlanetTextureLayer> layer,
 															bool deleteGuiItem)
 {
-	OpenThreads::ScopedLock<OpenThreads::Mutex> lock(theTextureLayerIndexMapMutex);
+	std::lock_guard<std::recursive_mutex> lock(theTextureLayerIndexMapMutex);
 	TextureLayerIndexMapType::iterator iter = theTextureLayerIndexMap.find(layer.get());
 	if(iter != theTextureLayerIndexMap.end())
 	{
@@ -1537,7 +1537,7 @@ void ossimPlanetQtLegend::removeIndexMapping(osg::ref_ptr<ossimPlanetTextureLaye
 void ossimPlanetQtLegend::addIndexMapping(osg::ref_ptr<ossimPlanetTextureLayer> layer,
 														ossimPlanetQtLegendTextureItem* item)
 {
-	OpenThreads::ScopedLock<OpenThreads::Mutex> lock(theTextureLayerIndexMapMutex);
+	std::lock_guard<std::recursive_mutex> lock(theTextureLayerIndexMapMutex);
 	if(layer.valid() && item)
 	{
 		theTextureLayerIndexMap[layer.get()] = item;
