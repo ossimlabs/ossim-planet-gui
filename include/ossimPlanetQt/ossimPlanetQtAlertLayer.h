@@ -55,7 +55,7 @@ public:
    }
    virtual void drawImplementation(osg::RenderInfo& state)const;
 
-   virtual osg::BoundingBox computeBound()const;
+   virtual osg::BoundingSphere computeBound()const;
    virtual void addOrUpdateAlert(const AlertInfo& info);
 protected:
    

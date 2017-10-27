@@ -380,7 +380,6 @@ int getMaximumFiles()
 ossimPlanetQtApplication::ossimPlanetQtApplication(int & argc, char ** argv, bool guiEnabled)
 : QApplication(argc, argv, guiEnabled)
 {
-   osg::Referenced::setThreadSafeReferenceCounting(true);
    setOrganizationName("OSSIM");
    setOrganizationDomain("planet.ossim.org");
    setApplicationName("OSSIM Planet");

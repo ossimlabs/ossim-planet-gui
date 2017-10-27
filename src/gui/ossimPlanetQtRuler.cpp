@@ -8,7 +8,7 @@
 #include <QHeaderView>
 #include <ossimPlanet/ossimPlanetLayer.h>
 #include <osg/Geode>
-#include <osg/CameraNode>
+#include <osg/Camera>
 #include <osg/Drawable>
 #include <osg/io_utils>
 #include <ossim/base/ossimUnitConversionTool.h>
@@ -101,7 +101,7 @@ protected:
    osg::Vec3d                  theStartPoint;
    osg::Vec3d                  theEndPoint;
    osg::ref_ptr<osg::Viewport> theViewport;
-   osg::ref_ptr<osg::CameraNode> theCameraNode;
+   osg::ref_ptr<osg::Camera> theCameraNode;
    osg::Geode* theGeode;
    ossimPlanetMeasureToolDrawable* theDrawable;
    mutable OpenThreads::Mutex theMutex;
@@ -110,12 +110,12 @@ protected:
 ossimPlanetMeasureTool::ossimPlanetMeasureTool()
 {
    thePointsValidFlag = false;
-   theCameraNode = new osg::CameraNode;
+   theCameraNode = new osg::Camera;
    theCameraNode->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
    theCameraNode->setProjectionMatrix(osg::Matrix::ortho2D(0,1024,0,1024));
    theCameraNode->setViewMatrix(osg::Matrix::identity());
    theCameraNode->setClearMask(GL_DEPTH_BUFFER_BIT);
-   theCameraNode->setRenderOrder(osg::CameraNode::POST_RENDER);
+   theCameraNode->setRenderOrder(osg::Camera::POST_RENDER);
    theDrawable = new ossimPlanetMeasureToolDrawable;
    theGeode = new osg::Geode();
    osg::StateSet* stateset = theGeode->getOrCreateStateSet();
