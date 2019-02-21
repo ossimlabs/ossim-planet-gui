@@ -72,11 +72,11 @@ void ossimPlanetQtAlertIconCallout::addOrUpdateAlert(const AlertInfo& info)
    }
 }
 
-osg::BoundingBox ossimPlanetQtAlertIconCallout::computeBound()const
+osg::BoundingSphere ossimPlanetQtAlertIconCallout::computeBound()const
 {
-   osg::BoundingBox bbox;
+   osg::BoundingSphere bounds;
 
-   return bbox;
+   return bounds;
 }
 
 ossimPlanetQtAlertLayer::ossimPlanetQtAlertLayer()
