@@ -101,7 +101,7 @@ protected:
    osg::Vec3d                  theStartPoint;
    osg::Vec3d                  theEndPoint;
    osg::ref_ptr<osg::Viewport> theViewport;
-   osg::ref_ptr<osg::Camera> theCameraNode;
+   osg::ref_ptr<osg::Camera>   theCamera;
    osg::Geode* theGeode;
    ossimPlanetMeasureToolDrawable* theDrawable;
    mutable OpenThreads::Mutex theMutex;
@@ -110,12 +110,12 @@ protected:
 ossimPlanetMeasureTool::ossimPlanetMeasureTool()
 {
    thePointsValidFlag = false;
-   theCameraNode = new osg::Camera;
-   theCameraNode->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
-   theCameraNode->setProjectionMatrix(osg::Matrix::ortho2D(0,1024,0,1024));
-   theCameraNode->setViewMatrix(osg::Matrix::identity());
-   theCameraNode->setClearMask(GL_DEPTH_BUFFER_BIT);
-   theCameraNode->setRenderOrder(osg::Camera::POST_RENDER);
+   theCamera = new osg::Camera;
+   theCamera->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
+   theCamera->setProjectionMatrix(osg::Matrix::ortho2D(0,1024,0,1024));
+   theCamera->setViewMatrix(osg::Matrix::identity());
+   theCamera->setClearMask(GL_DEPTH_BUFFER_BIT);
+   theCamera->setRenderOrder(osg::Camera::POST_RENDER);
    theDrawable = new ossimPlanetMeasureToolDrawable;
    theGeode = new osg::Geode();
    osg::StateSet* stateset = theGeode->getOrCreateStateSet();
@@ -126,8 +126,8 @@ ossimPlanetMeasureTool::ossimPlanetMeasureTool()
    theGeode->setCullingActive(false);
    theDrawable->setSupportsDisplayList(false);
    theGeode->addDrawable(theDrawable);
-   theCameraNode->addChild(theGeode);
-   addChild(theCameraNode.get());
+   theCamera->addChild(theGeode);
+   addChild(theCamera.get());
 
 }
 
@@ -150,7 +150,7 @@ void ossimPlanetMeasureTool::traverse(osg::NodeVisitor& nv)
       {
          if(theViewport.valid())
          {
-            theCameraNode->setProjectionMatrix(osg::Matrix::ortho2D(theViewport->x(),
+            theCamera->setProjectionMatrix(osg::Matrix::ortho2D(theViewport->x(),
                                                                     theViewport->width(),
                                                                     theViewport->y(),
                                                                     theViewport->height()));
