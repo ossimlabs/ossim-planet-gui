@@ -126,12 +126,12 @@ protected:
    QTreeWidgetItem* theAnimationPathRootItem;
    std::vector<QAction*> thePopupMenuActions;
 	
-	OpenThreads::ReentrantMutex  theNodeIndexMapMutex;
-	NodeIndexMapType    theNodeIndexMap;
-	OpenThreads::ReentrantMutex  theTextureLayerIndexMapMutex;
-	TextureLayerIndexMapType    theTextureLayerIndexMap;
+	std::recursive_mutex     theNodeIndexMapMutex;
+	NodeIndexMapType         theNodeIndexMap;
+	std::recursive_mutex     theTextureLayerIndexMapMutex;
+	TextureLayerIndexMapType theTextureLayerIndexMap;
 	
-   OpenThreads::ReentrantMutex thePopulateLegendMutex;
+  std::recursive_mutex thePopulateLegendMutex;
 protected slots:
    void doubleClick(QTreeWidgetItem * item, int  columnNumber); 
    void changed(QTreeWidgetItem * item, int  columnNumber);

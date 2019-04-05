@@ -6,9 +6,8 @@
 #include <ossimPlanetQt/ossimPlanetQtOperation.h>
 #include <ossimPlanetQt/ossimPlanetQtActivityThreadQueueItem.h>
 #include <ossimPlanetQt/ossimPlanetQtExport.h>
-#include <OpenThreads/Mutex>
-#include <OpenThreads/ScopedLock>
 #include <map>
+#include <mutex>
 class OSSIMPLANETQT_DLL ossimPlanetQtActivityWidget : public QTreeWidget
 {
    Q_OBJECT
@@ -119,7 +118,7 @@ protected:
 	osg::ref_ptr<ossimPlanetOperationThreadQueue> theOpenFileQueue;
 	osg::ref_ptr<ossimPlanetOperationThreadQueue> theMiscQueue;
    
-   OpenThreads::Mutex   theItemMapMutex;
+   std::mutex   theItemMapMutex;
    OperationItemMapType theItemMap;
   
    osg::ref_ptr<ossimPlanetQtActivityWidget::Callback> theCallback;

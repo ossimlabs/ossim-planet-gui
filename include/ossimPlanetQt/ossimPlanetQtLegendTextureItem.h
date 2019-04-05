@@ -77,7 +77,7 @@ protected:
    osg::ref_ptr<ossimPlanetTextureLayer> theLayer;
    osg::ref_ptr<ossimPlanetQtLegendTextureItem::Callback> theCallback;
    
-   OpenThreads::Mutex theStagerMutex;
+   std::mutex theStagerMutex;
    osg::ref_ptr<StagerCallback> theStagerCallback;
    osg::ref_ptr<ossimPlanetOperation> theStager;
    

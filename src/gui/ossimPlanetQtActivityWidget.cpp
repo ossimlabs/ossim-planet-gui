@@ -117,7 +117,7 @@ bool ossimPlanetQtActivityWidget::event(QEvent* e)
    {
       case ossimPlanetQtActivityWidget::STATUS_TYPE:
       {
-         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(theItemMapMutex);
+         std::lock_guard<std::mutex> lock(theItemMapMutex);
          ossimPlanetQtActivityWidget::QtOperationEvent* event = dynamic_cast<ossimPlanetQtActivityWidget::QtOperationEvent*>(e);
          if(event)
          {
@@ -186,7 +186,7 @@ void ossimPlanetQtActivityWidget::deleteAllActivities()
 
 void ossimPlanetQtActivityWidget::removeOperation(ossimPlanetOperation* operation)
 {
-   OpenThreads::ScopedLock<OpenThreads::Mutex> lock(theItemMapMutex);
+   std::lock_guard<std::mutex> lock(theItemMapMutex);
    OperationItemMapType::iterator iter = theItemMap.find(operation);
    
    if(iter!=theItemMap.end())
