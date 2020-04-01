@@ -329,7 +329,7 @@ void ossimPlanetQtLegendTextureItem::loadXml(ossimRefPtr<ossimXmlNode> node,
       }
       setText(0, name->getText().c_str());
    }
-   const vector<ossimRefPtr<ossimXmlNode> >& childNodes = node->getChildNodes();
+   const std::vector<ossimRefPtr<ossimXmlNode> >& childNodes = node->getChildNodes();
    if(childNodes.size())
    {
       ossim_uint32 idx = 0;

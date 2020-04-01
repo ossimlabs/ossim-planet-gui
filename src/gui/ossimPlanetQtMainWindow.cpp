@@ -306,7 +306,7 @@ bool ossimPlanetIoMainWindowMessageHandler::handleMessage(osg::ref_ptr<ossimPlan
       kmlFile = kmlFile.dirCat("kml");
       kmlFile.createDirectory();
       kmlFile = kmlFile.dirCat(filename);
-      ofstream out(kmlFile.c_str());
+      std::ofstream out(kmlFile.c_str());
       out.write((char*)(kml.c_str()), kml.size());
       out.close();
       if(kmlFile.exists())
@@ -324,7 +324,7 @@ bool ossimPlanetIoMainWindowMessageHandler::handleMessage(osg::ref_ptr<ossimPlan
                                        message->data().end()));
       if(node->read(in))
       {
-         const vector<ossimRefPtr<ossimXmlNode> >&      childNodes = node->getChildNodes();
+         const std::vector<ossimRefPtr<ossimXmlNode> >&      childNodes = node->getChildNodes();
          ossim_uint32 idx = 0;
          for(idx = 0; idx < childNodes.size();++idx)
          {
@@ -598,7 +598,7 @@ void ossimPlanetQtMainWindow::saveSession(const QString& filename)
    
    rootNode->addChildNode(manipulatorNode);
 
-   ofstream out(theSessionFilename.c_str());
+   std::ofstream out(theSessionFilename.c_str());
    document->initRoot(rootNode.get());
    
    out << *document << std::endl;
@@ -638,7 +638,7 @@ void ossimPlanetQtMainWindow::loadSession(const QString& filename)
             ossimRefPtr<ossimXmlNode> pos;
             ossimRefPtr<ossimXmlNode> orient;
             
-            const vector<ossimRefPtr<ossimXmlNode> >& childNodes = manipulator->getChildNodes();
+            const std::vector<ossimRefPtr<ossimXmlNode> >& childNodes = manipulator->getChildNodes();
             
             if(childNodes.size() == 1)
             {
@@ -1105,9 +1105,9 @@ void ossimPlanetQtMainWindow::on_viewStopRecordingAnimationPath_triggered(bool)
 {
    theManipulator->stopRecording();
    osg::ref_ptr<osg::AnimationPath> animationPath = new osg::AnimationPath;
-   ostringstream out;
+   std::ostringstream out;
    theManipulator->saveRecording(out);
-   istringstream in(out.str());
+   std::istringstream in(out.str());
    animationPath->read(in);
    thePlanetLegend->addAnimationPath(animationPath);
 }
@@ -1662,7 +1662,7 @@ void ossimPlanetQtMainWindow::on_viewSyncLocation_triggered(bool)
 
    std::ostringstream out;
    
-   out << setprecision(20) << ":navigator gotolatlonelevhpr " << lookAt->lat() << " "
+   out << std::setprecision(20) << ":navigator gotolatlonelevhpr " << lookAt->lat() << " "
        << lookAt->lon()    << " " << lookAt->altitude()        << " "           << lookAt->heading() 
        << " " << lookAt->pitch() << " " << lookAt->roll();
 
@@ -3548,7 +3548,7 @@ void ossimPlanetQtMainWindow::viewChanged()
       {
          std::ostringstream out;
             
-         out << setprecision(20)
+         out << std::setprecision(20)
              << "<Set target=\"" << ":navigator\" vref=\"wgs84\">"
              <<   "<Camera>"
              <<      "<longitude>" << camera->lon() << "</longitude>"

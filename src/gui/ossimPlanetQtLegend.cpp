@@ -222,7 +222,7 @@ void ossimPlanetQtLegend::populateLegend(ossimRefPtr<ossimXmlNode> legendNode)
    theAnimationPathRootItem = new QTreeWidgetItem(this);
    theAnimationPathRootItem->setText(0, "Animation Paths");
    
-   const vector<ossimRefPtr<ossimXmlNode> >& childNodes = legendNode->getChildNodes();
+   const std::vector<ossimRefPtr<ossimXmlNode> >& childNodes = legendNode->getChildNodes();
    std::vector<ossimPlanetOperation*> activityList;
    if(childNodes.size())
    {
@@ -721,7 +721,7 @@ void ossimPlanetQtLegend::doubleClick(QTreeWidgetItem * item, int  /*columnNumbe
 
          animationItem->getAnimationPathAsString(animationPath);
 
-         istringstream in(animationPath);
+         std::istringstream in(animationPath);
          mainWindow()->manipulator()->loadRecording(in);
          mainWindow()->manipulator()->playRecording();
       }
@@ -808,7 +808,7 @@ void ossimPlanetQtLegend::addXml(ossimRefPtr<ossimXmlNode> node)
 {
    blockSignals(true);
    ossimString type;
-   const vector<ossimRefPtr<ossimXmlNode> >& childNodes = node->getChildNodes();
+   const std::vector<ossimRefPtr<ossimXmlNode> >& childNodes = node->getChildNodes();
    std::vector<ossimPlanetOperation*> activityList;
    ossimPlanetQtLegendTextureItem* imageLayers = referenceTextureItem();
    if(childNodes.size())
@@ -1907,7 +1907,7 @@ void ossimPlanetQtLegend::dropEvent ( QDropEvent * event )
          else
          {
             
-            ifstream in(file.c_str(), std::ios::binary|std::ios::in);
+           std::ifstream in(file.c_str(), std::ios::binary|std::ios::in);
             if(in)
             {
                char buf[1000];
