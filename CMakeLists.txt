@@ -1,14 +1,10 @@
+cmake_minimum_required(VERSION 3.5)
 PROJECT(ossimPlanetQt)
 MESSAGE("**********************Setting up ossimPlanetQt********************")
 INCLUDE(OssimVersion)
 INCLUDE(OssimUtilities)
 INCLUDE(OssimCommonVariables)
 INCLUDE(OssimQt5Macros)
-IF(NOT APPLE)
-  cmake_minimum_required(VERSION 2.6)
-ELSE(NOT APPLE)
-  cmake_minimum_required(VERSION 2.8)
-ENDIF(NOT APPLE)
 
 # Find the QtWidgets library
 find_package(Qt5Widgets)
